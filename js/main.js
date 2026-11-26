@@ -131,7 +131,7 @@ function labs() {
 function previewTile(cv) {
   const e = cv.dataset.prev, c = cv.getContext('2d'); cv.width = 400; cv.height = 150; let t0 = 0;
   const draw = (ts) => {
-    if (!cv.isConnected) return; t0 = ts / 1000; c.clearRect(0, 0, 400, 150); c.strokeStyle = '#4FF0C3'; c.fillStyle = '#4FF0C3'; c.lineWidth = 2; c.shadowColor = '#4FF0C3'; c.shadowBlur = 12;
+    if (!cv.isConnected) return; t0 = ts / 1000; c.clearRect(0, 0, 400, 150); c.strokeStyle = '#FFD23F'; c.fillStyle = '#FFD23F'; c.lineWidth = 2; c.shadowColor = '#FFD23F'; c.shadowBlur = 12;
     if (e === 'pendulum') { const th = 0.6 * Math.cos(t0 * 2.6), x = 200 + Math.sin(th) * 90, y = 14 + Math.cos(th) * 90; c.beginPath(); c.moveTo(200, 14); c.lineTo(x, y); c.stroke(); c.beginPath(); c.arc(x, y, 11, 0, 7); c.fill(); }
     else if (e === 'ohm') { c.strokeRect(100, 30, 200, 90); for (let i = 0; i < 24; i++) { const d = ((i / 24) * 580 + t0 * 90) % 580; let x, y; if (d < 200) { x = 100 + d; y = 30; } else if (d < 290) { x = 300; y = 30 + d - 200; } else if (d < 490) { x = 300 - (d - 290); y = 120; } else { x = 100; y = 120 - (d - 490); } c.beginPath(); c.arc(x, y, 2.5, 0, 7); c.fill(); } }
     else { c.beginPath(); for (let i = 0; i <= 40; i++) { const u = i / 40, x = 40 + u * 320, y = 130 - 100 * 4 * u * (1 - u); i ? c.lineTo(x, y) : c.moveTo(x, y); } c.stroke(); const u = (t0 * 0.5) % 1; c.beginPath(); c.arc(40 + u * 320, 130 - 400 * u * (1 - u), 9, 0, 7); c.fill(); }
@@ -235,7 +235,7 @@ function cardScreen(e) {
   const C = 2 * Math.PI * 80, unit = EXPERIMENTS[e].unit;
   app.innerHTML = `<section class="page"><div class="eyebrow" data-in>05 / ${t('card.title')}</div><h2 data-in>${t('lab.' + e)} · ${esc(inst.planet.name)}</h2>
   <div class="grid2"><div class="panel" data-in>
-    <div class="row"><div class="ring"><svg viewBox="0 0 190 190"><circle cx="95" cy="95" r="80" fill="none" stroke="#26304A" stroke-width="14"/><circle id="arc" cx="95" cy="95" r="80" fill="none" stroke="#4FF0C3" stroke-width="14" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}" style="filter:drop-shadow(0 0 8px #4FF0C3)"/></svg><div class="n"><div><span id="num">0</span><small>${g.band.toUpperCase()}</small></div></div></div>
+    <div class="row"><div class="ring"><svg viewBox="0 0 190 190"><circle cx="95" cy="95" r="80" fill="none" stroke="#5468FF" stroke-width="14"/><circle id="arc" cx="95" cy="95" r="80" fill="none" stroke="#FFD23F" stroke-width="14" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}" style="filter:drop-shadow(0 0 8px #FFD23F)"/></svg><div class="n"><div><span id="num">0</span><small>${g.band.toUpperCase()}</small></div></div></div>
     <div class="kv"><span>${t('card.truth')}</span><br>${g.truth} ${unit}<br><span>${t('card.err')}</span><br>${g.pctError == null ? '—' : g.pctError.toFixed(2) + ' %'}<br><span>${t('card.fit')}</span><br>${g.fitValue == null ? '—' : g.fitValue.toPrecision(4) + ' ' + unit}</div></div>
     <div style="height:20px"></div>${g.parts.map((p) => `<div class="part"><span>${p.label}</span><div class="bar"><i data-w="${(p.pts / p.max) * 100}"></i></div><span class="mono">${p.pts}/${p.max}</span><span class="f">${p.formula}</span></div>`).join('')}
   </div><div data-in><div class="panel"><h3>${g.nRows ? t('bench.graph') : t('card.noData')}</h3><canvas class="graph" id="gr2"></canvas><div style="height:16px"></div>

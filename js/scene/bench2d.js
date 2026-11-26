@@ -3,7 +3,7 @@ import { stepPendulum, DT, simulatePeriod, measurePendulum } from '../physics/pe
 import { measureOhm, trueCurrentmA } from '../physics/ohm.js';
 import { simulateFlight, measureProjectile } from '../physics/projectile.js';
 
-const C = { phos: '#4FF0C3', amber: '#FFB547', ion: '#8B7CFF', coral: '#FF7A6B', chalk: '#EEF1F7', rule: '#26304A', muted: '#A9B3C9' };
+const C = { phos: '#FFD23F', amber: '#FF8A3D', ion: '#FF5FA2', coral: '#FF6B8B', chalk: '#FFF8EC', rule: '#5468FF', muted: '#C9D2FF' };
 
 export class Bench {
   constructor(canvas, exp, inst) {
@@ -61,9 +61,9 @@ export class Bench {
   frame() {
     const { ctx, w, h } = this;
     ctx.clearRect(0, 0, w, h);
-    const g = ctx.createLinearGradient(0, 0, 0, h); g.addColorStop(0, 'rgba(20,27,46,.55)'); g.addColorStop(1, 'rgba(11,16,32,.9)');
+    const g = ctx.createLinearGradient(0, 0, 0, h); g.addColorStop(0, 'rgba(42,61,216,.55)'); g.addColorStop(1, 'rgba(30,47,191,.9)');
     ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
-    ctx.strokeStyle = 'rgba(38,48,74,.55)'; ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(84,104,255,.55)'; ctx.lineWidth = 1;
     for (let x = 0; x < w; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
     for (let y = 0; y < h; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
   }
@@ -89,9 +89,9 @@ export class Bench {
     const th = this.anim ? this.pend.th : (this.p.th * Math.PI) / 180;
     const bx = px + Math.sin(th) * len, by = py + Math.cos(th) * len;
     // protractor arc
-    ctx.strokeStyle = 'rgba(139,124,255,.35)'; ctx.beginPath(); ctx.arc(px, py, Math.min(70, len * 0.5), Math.PI / 2 - 0.7, Math.PI / 2 + 0.7); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,95,162,.35)'; ctx.beginPath(); ctx.arc(px, py, Math.min(70, len * 0.5), Math.PI / 2 - 0.7, Math.PI / 2 + 0.7); ctx.stroke();
     ctx.strokeStyle = C.chalk; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(bx, by); ctx.stroke();
-    this.glow(C.phos, 24); const gr = ctx.createRadialGradient(bx - 4, by - 4, 2, bx, by, 16); gr.addColorStop(0, '#d8fff4'); gr.addColorStop(1, C.phos);
+    this.glow(C.phos, 24); const gr = ctx.createRadialGradient(bx - 4, by - 4, 2, bx, by, 16); gr.addColorStop(0, '#FFF3C2'); gr.addColorStop(1, C.phos);
     ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(bx, by, 14, 0, 7); ctx.fill(); this.noGlow();
     // photogate
     ctx.strokeStyle = C.amber; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(px, py + len + 26); ctx.lineTo(px, py + len + 56); ctx.stroke(); ctx.setLineDash([]);
@@ -111,22 +111,22 @@ export class Bench {
       let d = ((i / n) * per + this.t * speed) % per, x, y;
       const a = x1 - x0, b = y1 - y0;
       if (d < a) { x = x0 + d; y = y0; } else if (d < a + b) { x = x1; y = y0 + (d - a); } else if (d < 2 * a + b) { x = x1 - (d - a - b); y = y1; } else { x = x0; y = y1 - (d - 2 * a - b); }
-      ctx.fillStyle = V === 0 ? 'rgba(169,179,201,.3)' : C.phos; ctx.globalAlpha = V === 0 ? 0.5 : 0.9;
+      ctx.fillStyle = V === 0 ? 'rgba(201,210,255,.3)' : C.phos; ctx.globalAlpha = V === 0 ? 0.5 : 0.9;
       ctx.beginPath(); ctx.arc(x, y, 2.4, 0, 7); ctx.fill();
     }
     ctx.globalAlpha = 1;
     // resistor (top)
     const glowK = Math.min(1, (I * I * this.inst.ohm.R) / 4e5 * 6);
-    ctx.fillStyle = '#141B2E'; ctx.strokeStyle = C.amber; ctx.lineWidth = 2;
+    ctx.fillStyle = '#2A3DD8'; ctx.strokeStyle = C.amber; ctx.lineWidth = 2;
     const rx = w / 2 - 70, ry = y0 - 16;
     this.glow(C.coral, 6 + 40 * glowK); ctx.fillRect(rx, ry, 140, 32); ctx.strokeRect(rx, ry, 140, 32); this.noGlow();
-    ctx.fillStyle = `rgba(255,122,107,${0.12 + 0.6 * glowK})`; ctx.fillRect(rx + 2, ry + 2, 136, 28);
+    ctx.fillStyle = `rgba(255,107,139,${0.12 + 0.6 * glowK})`; ctx.fillRect(rx + 2, ry + 2, 136, 28);
     ctx.fillStyle = C.chalk; ctx.font = '700 14px "JetBrains Mono",monospace'; ctx.textAlign = 'center'; ctx.fillText('R = ?', w / 2, ry + 21);
     // battery (left)
-    ctx.fillStyle = '#141B2E'; ctx.strokeStyle = C.ion; ctx.fillRect(x0 - 26, h / 2 - 34, 52, 68); ctx.strokeRect(x0 - 26, h / 2 - 34, 52, 68);
+    ctx.fillStyle = '#2A3DD8'; ctx.strokeStyle = C.ion; ctx.fillRect(x0 - 26, h / 2 - 34, 52, 68); ctx.strokeRect(x0 - 26, h / 2 - 34, 52, 68);
     ctx.fillStyle = C.ion; ctx.fillText(V.toFixed(1) + ' V', x0, h / 2 + 5);
     // ammeter (bottom)
-    ctx.fillStyle = '#141B2E'; ctx.strokeStyle = C.phos; const mx = w / 2 - 70, my = y1 - 22;
+    ctx.fillStyle = '#2A3DD8'; ctx.strokeStyle = C.phos; const mx = w / 2 - 70, my = y1 - 22;
     ctx.fillRect(mx, my, 140, 44); ctx.strokeRect(mx, my, 140, 44);
     ctx.fillStyle = C.phos; ctx.font = '700 20px "JetBrains Mono",monospace';
     ctx.fillText(this.reading && !this.anim ? this.reading.I.toFixed(1) + ' mA' : this.anim ? '···' : '— mA', w / 2, my + 29);
@@ -147,7 +147,7 @@ export class Bench {
     const step = maxR > 80 ? 20 : maxR > 30 ? 10 : 5;
     for (let m = 0; m <= maxR; m += step) { const x = x0 + m * sc; ctx.beginPath(); ctx.moveTo(x, gy); ctx.lineTo(x, gy + 8); ctx.stroke(); ctx.fillText(m + ' m', x - 10, gy + 22); }
     // previous shots
-    this.shots.forEach((s, i) => { ctx.strokeStyle = `rgba(139,124,255,${0.25 + 0.5 * (i / this.shots.length)})`; ctx.lineWidth = 1.5; ctx.beginPath(); s.path.forEach((p, j) => { const x = x0 + p[0] * sc, y = gy - p[1] * sc; j ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke(); });
+    this.shots.forEach((s, i) => { ctx.strokeStyle = `rgba(255,95,162,${0.25 + 0.5 * (i / this.shots.length)})`; ctx.lineWidth = 1.5; ctx.beginPath(); s.path.forEach((p, j) => { const x = x0 + p[0] * sc, y = gy - p[1] * sc; j ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke(); });
     // cannon
     const th = (this.p.th * Math.PI) / 180;
     ctx.save(); ctx.translate(x0, gy); ctx.rotate(-th); ctx.fillStyle = C.chalk; ctx.fillRect(0, -6, 38, 12); ctx.restore();
